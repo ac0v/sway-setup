@@ -1,13 +1,13 @@
 for_window [class="Firefox" window_role="browser"] {
   border normal 0
-  move container to workspace 1:web
+  move container to workspace 3:web
 }
 for_window [class="Firefox" window_role="^(?!browser$)"] {
   floating enable
 }
 for_window [app_id="firefox"] {
   border normal 0
-  move container to workspace 1:web
+  move container to workspace 3:web
   inhibit_idle fullscreen
 }
 for_window [app_id="firefox" title="^About Firefox Nightly$"] {
@@ -18,44 +18,10 @@ for_window [app_id="firefox" title=" - Sharing Indicator$"] {
   floating enable
   inhibit_idle open
 }
-
-for_window [app_id="org.kde.konsole"] {
-  move to scratchpad
-  resize set width 1266 px
-}
-
-for_window [app_id="com.github.communi.communi"] {
-  move container to workspace 3:irc
-}
-
-for_window [app_id="pinentry-qt"] {
-  move position center
-  floating enable
-}
 for_window [app_id="pavucontrol"] {
-  floating enable
-}
-for_window [class="^Popcorn-Time$"] {
-  inhibit_idle fullscreen
-}
-for_window [app_id="wdisplays"] {
-  floating enable
-}
-for_window [app_id="org.kde.kruler"] {
-  border normal 1
   floating enable
 }
 for_window [app_id="desktopclient.nextcloud.com.nextcloud"] {
   border normal 1
   floating enable
 }
-for_window [class="SoulseekQt"] {
-  move container to workspace 5:media
-}
-for_window [app_id="Alacritty"] {
-  move container to workspace 2:term
-}
-
-for_window [app_id="avizo-service"] border pixel 0
-for_window [app_id="avizo-service"] sticky toggle
-no_focus [app_id="avizo-service"]

@@ -1,0 +1,11 @@
+profile {
+	output eDP-1 disable
+	output "Samsung Electric Company LC49G95T H4ZN700195" mode 5120x1440 position 0,0 scale 1
+}
+#profile {
+#        output eDP-1 enable
+#        output HDMI-A-1 mirror eDP-1
+#}
+profile {
+	output eDP-1 enable scale 1.5
+}

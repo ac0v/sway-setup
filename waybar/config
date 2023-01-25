@@ -1,95 +1,103 @@
 {
     "layer": "top",
-    "position": "bottom",
-    "height": 24,
-    "modules-left": ["sway/workspaces", "idle_inhibitor", "sway/mode"],
-    "modules-center": ["sway/window"],
-    "modules-right": [ "pulseaudio", "backlight", "network", "cpu", "memory", "battery#bat0", "battery#bat1",
-                       "tray", "sway/language", "clock" ],
-    "sway/workspaces": {
-         "disable-scroll": true,
-         "all-outputs": true,
-         "format": "{index} {name}"
-    },
-    "sway/mode": {
-        "format": "{}"
-    },
-    "sway/language": {
-        "format": "{}",
-        "max-length": 50
-    },
-    "tray": {
-        // "icon-size": 21,
-        "spacing": 10
-    },
-    "clock": {
-        "tooltip-format": "{:%A\n%d %B %Y\n%H:%M}",
-        "format": "{:%a %d %b %H:%M}",
-        "format-alt": "{:%H:%M}"
-    },
-    "cpu": {
-        "format": "{usage:2}% "
-    },
-    "memory": {
-        "format": "{}% "
-    },
-    "battery#bat0": {
-        "bat": "BAT0",
-        "name": "BAT0",
-        "states": {
-            "warning": 20,
-            "critical": 10
-        },
-        "format": "{capacity}% {icon}",
-        "format-icons": ["", "", "", "", ""]
-    },
-    "battery#bat1": {
-        "bat": "BAT1",
-        "name": "BAT1",
-        "states": {
-            "warning": 20,
-            "critical": 10
-        },
-        "format": "{capacity}% {icon}",
-        "format-icons": ["", "", "", "", ""]
-    },
-    "network": {
-        "interval": 1,
-        "max-width": 50,
-        // "interface": "wlp2s0", // (Optional) To force the use of this interface
-        "format-wifi": "",
-        "format-ethernet": "{bandwidthUpBits} {bandwidthDownBits} ",
-        "format-disconnected": "⚠",
-        "tooltip-format-wifi": " {essid}: {frequency}Mhz ({signalStrength}%)\n{bandwidthUpBits}\n{bandwidthDownBits}",
-        "tooltip-format-ethernet": " {ifname}: {ipaddr}/{cidr}",
-        "tooltip-format-disconnected": "⚠ Disconnected"
-    },
-    "pulseaudio": {
-        //"scroll-step": 1,
-        "format": "{volume}% {icon}",
-        "format-bluetooth": "{volume}% {icon}",
-        "format-muted": "",
-        "format-icons": {
-            "headphones": "",
-            "handsfree": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", ""]
-        },
-        "on-click": "pavucontrol"
-    },
+    "height": 20,
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "modules-center": ["clock"],
+    "modules-right": ["battery", "pulseaudio", "backlight", "cpu", "temperature", "memory", "tray"],
+
     "backlight": {
-        "device": "intel_backlight",
-        "format": "{percent}% {icon}",
-        "format-icons": ["", ""]
+      "device": "intel_backlight",
+      "format": "{icon} {percent}%",
+      "format-icons": ["", ""],
+      "on-scroll-up": "light -A 1",
+      "on-scroll-down": "light -U 1"
     },
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
+
+    "battery": {
+      "states": {
+        "warning": 30,
+        "critical": 15
+      },
+      "format": "{icon} {capacity}%",
+      "format-alt": "{icon} {time}",
+      "format-icons": ["", "", "", "", ""]
+    },
+
+    "clock": {
+      "format": "{:%H:%M:%S %p}",
+      "format-alt": "{:%A, %d %B %Y}",
+      "interval": 1,
+      "on-click-right": "wl-copy $(date '+%Y-%m-%d %T')",
+      "tooltip": false
+    },
+
+    "cpu": {
+      "interval": 10,
+      "states": {
+        "warning": 60,
+        "critical": 90
+      },
+      "format": " {}%",
+      "max-length": 10,
+      "on-click": "alacritty -e htop"
+    },
+
+    "memory": {
+      "interval": 30,
+      "states": {
+        "warning": 60,
+        "critical": 90
+      },
+      "format": " {}%",
+      "max-length": 10,
+      "tooltip": false
+    },
+
+    "network": {
+      "format-wifi": " {essid} ({signalStrength}%)",
+      "format-ethernet": " {ifname}: {ipaddr}/{cidr}",
+      "format-disconnected": "Disconnected",
+      "on-click": "wl-copy $(ip address show up scope global | grep inet | head -n1 | cut -d/ -f 1 | tr -d [:space:] | cut -c5-)",
+      "on-click-right": "wl-copy $(ip address show up scope global | grep inet6 | head -n1 | cut -d/ -f 1 | tr -d [:space:] | cut -c6-)",
+      "tooltip-format": "{ifname}\n{ipaddr}/{cidr}\n",
+      "tooltip-format-wifi": "{essid} {frequency}MHz\nStrength: {signaldBm}dBm ({signalStrength}%)\nIP: {ipaddr}/{cidr}\n⬆: {bandwidthUpBits} ⬇: {bandwidthDownBits}",
+	  "interval": 10
+    },
+
+    "pulseaudio": {
+      "format": "{icon} {volume}%",
+      "format-bluetooth": "{volume}% {icon}",
+      "format-muted": " MUTED",
+      "format-icons": {
+        "default": ["", ""]
+      },
+      "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+      "on-click-middle": "pavucontrol-qt",
+      "on-click-right": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+      "tooltip": false
+    },
+
+    "sway/mode": {
+      "format": "<span style=\"italic\">{}</span>",
+      "pango_markup": true
+    },
+
+	"sway/workspaces": {
+      "disable-scroll": true,
+      "all-outputs": true,
+      "format": "{icon}",
+      "format-icons": {
+        "urgent": ""
+      }
+    },
+
+    "temperature": {
+	  "critical-threshold": 70,
+	  "format-critical": " {temperatureC}°C",
+	  "format": " {temperatureC}°C"
+    },
+
+    "tray": {
+      "spacing": 10
     }
 }

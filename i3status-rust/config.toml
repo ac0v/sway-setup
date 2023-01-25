@@ -1,78 +1,49 @@
-# when using 3istsatus-rs with swaybar
-# https://github.com/greshake/i3status-rust
+# NOTE: this example targets the master branch of i3status-rust.
 #
+# For latest stable version, refer to
+# https://github.com/greshake/i3status-rust/blob/v0.22.0/examples/config.toml
 
+icons_format = "{icon}"
+
+[theme]
 theme = "solarized-dark"
-icons = "awesome5"
+[theme.overrides]
+idle_bg = "#123456"
+idle_fg = "#abcdef"
+
+[icons]
+icons = "awesome"
+[icons.overrides]
+bat = " | | "
+bat_full = " |X| "
+bat_charging = " |^| "
+bat_discharging = " |v| "
 
 [[block]]
-block = "temperature"
-collapsed = false
-interval = 10
-format = "gpu {max}°"
-chip = "amdgpu-pci-*"
-
-[[block]]
-block = "temperature"
-collapsed = false
-interval = 10
-format = "cpu {max}°"
-chip = "k10temp-pci-*"
-
-[[block]]
-block = "temperature"
-collapsed = true
-interval = 10
-format = "nvme: {max}°"
-chip = "nvme-pci-*"
-
-[[block]]
-block = "temperature"
-collapsed = true
-interval = 10
-format = "wifi: {max}°"
-chip = "iwlwifi_1-*"
-
-[[block]]
-block = "net"
-device = "wlan0"
-format = "{ssid} {signal_strength} {ip} {speed_down} {graph_down}"
-interval = 5
+block = "cpu"
 
 [[block]]
 block = "disk_space"
 path = "/"
-alias = "/"
 info_type = "available"
-unit = "GB"
+alert_unit = "GB"
 interval = 20
 warning = 20.0
 alert = 10.0
+format = " $icon root: $available.eng(2) "
 
 [[block]]
 block = "memory"
-display_type = "memory"
-format_mem = "{Mup}%"
-format_swap = "{SUp}%"
-
-[[block]]
-block = "cpu"
-interval = 1
-
-[[block]]
-block = "load"
-interval = 1
-format = "{1m}"
+format = " $icon $mem_total_used_percents.eng(2) "
+format_alt = " $icon_swap $swap_used_percents.eng(2) "
 
 [[block]]
 block = "sound"
-
-[[block]]
-block = "keyboard_layout"
-driver = "sway"
-sway_kb_identifier = "6127:24585:Lite-On_Technology_Corp._ThinkPad_USB_Keyboard_with_TrackPoint"
+[[block.click]]
+button = "left"
+cmd = "pavucontrol"
 
 [[block]]
 block = "time"
-interval = 60
-format = "%a %d/%m %R"
+interval = 5
+format = " %a %d/%m %R "

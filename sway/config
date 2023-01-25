@@ -6,23 +6,33 @@
 set $mod Mod4
 
 # Your preferred terminal emulator
-set $term konsole
+set $term alacritty
 
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
 #set $menu dmenu_path | dmenu | xargs swaymsg exec
 #set $menu dmenu_path | dmenu | xargs systemd-run --user
-set $menu ~/src/wldash/target/release/wldash
+set $menu dmenu_path | wofi --show drun -i | xargs swaymsg exec --
 
-font DejaVu Sans 10
-workspace_layout tabbed
-focus_follows_mouse no
+#font DejaVu Sans 10
+#workspace_layout tabbed
+#focus_follows_mouse no
+
+default_border pixel 1
+# if you switch to the same worksapce twice in a row you
+# get to the previous one instead
+workspace_auto_back_and_forth yes
+
+# borders are only shown when there are more than one windowos
+# inside the workspace
+smart_borders yes
 
 include input
 include output
 include bindings
 include apps
+include bar
 include /etc/sway/config.d/*
 
 exec "~/.config/sway/keyboard-layout-per-window.py"
-exec "systemctl --user import-environment ; systemctl --user start sway-session.target"
+exec "systemctl --user import-environment ; dbus-update-activation-environment --all ; systemctl --user start sway-session.target"
